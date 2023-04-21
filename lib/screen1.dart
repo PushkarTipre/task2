@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:task2/screen2.dart';
+
+//enum genderSelect { Male, Female }
+String genderReal = "xzzz";
 
 class authentication extends StatefulWidget {
   const authentication({Key? key}) : super(key: key);
@@ -11,16 +16,19 @@ class authentication extends StatefulWidget {
 
 class _authenticationState extends State<authentication> {
   late int selectedRadio;
+
   late bool isChecked;
+  late bool checkChecked;
   final _text = TextEditingController();
   bool _validate = false;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     selectedRadio = 0;
     isChecked = false;
+    checkChecked = false;
+    //genderReal = "xxx";
   }
 
   setSelectedRadio(int val) {
@@ -35,7 +43,7 @@ class _authenticationState extends State<authentication> {
       appBar: AppBar(
         title: Text('User Authentication'),
       ),
-      backgroundColor: Colors.white70,
+      backgroundColor: Color(0xffCECACA),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -67,32 +75,51 @@ class _authenticationState extends State<authentication> {
                   prefixIcon: Icon(Icons.man),
                   hintText: 'Enter Username',
                   filled: true,
-                  fillColor: Colors.grey,
+                  fillColor: Colors.white30,
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.green),
                   ),
                 ),
               ),
             ),
+            /*ListTile(
+              title: Text('Male'),
+              leading: Radio(
+                value: genderSelect.Male,
+                groupValue: _gender,
+                activeColor: Colors.green,
+                onChanged: (val) {
+                  setState(() {
+                    _gender = val!;
+                  });
+                },
+              ),
+            ),*/
             ListTile(
               title: Text('Male'),
               leading: Radio(
-                value: 1,
-                groupValue: selectedRadio,
+                value: "Male",
                 activeColor: Colors.green,
-                onChanged: (val) {
-                  setSelectedRadio(val!);
+                groupValue: genderReal,
+                onChanged: (value) {
+                  //setSelectedRadio(value);
+                  setState(() {
+                    genderReal = value.toString();
+                  });
                 },
               ),
             ),
             ListTile(
               title: Text('Female'),
               leading: Radio(
-                value: 2,
+                value: "Female",
                 activeColor: Colors.orange,
-                groupValue: selectedRadio,
-                onChanged: (val) {
-                  setSelectedRadio(val!);
+                groupValue: genderReal,
+                onChanged: (value) {
+                  //setSelectedRadio(value);
+                  setState(() {
+                    genderReal = value.toString();
+                  });
                 },
               ),
             ),
@@ -111,14 +138,48 @@ class _authenticationState extends State<authentication> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _text.text.isEmpty ? _validate = true : _validate = false;
-                });
-              },
-              child: Text('Register'),
+            Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: TextButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.transparent),
+                onPressed: () {
+                  setState(() {
+                    if (_text.text.isEmpty) {
+                      _validate = true;
+                      debugPrint(genderReal);
+                    } else {
+                      _validate = false;
+
+                      //print();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return result(name: _text.text);
+                          },
+                        ),
+                      );
+                    }
+                    //_text.text.isEmpty ? _validate = true : _validate = false;
+                    //Navigator.pushNamed(context, result.id);
+                  });
+                },
+                child: Image(
+                    height: 150,
+                    width: 250,
+                    image: NetworkImage(
+                        'https://s38924.pcdn.co/wp-content/uploads/2021/09/User-Registration-1-scaled-1-1360x692.jpg')),
+              ),
             ),
+            /*Image(
+              image: NetworkImage(
+                  'https://s38924.pcdn.co/wp-content/uploads/2021/09/User-Registration-1-scaled-1-1360x692.jpg'),
+              height: 200,
+              width: 250,
+              fit: BoxFit.cover,
+            )*/
           ],
         ),
       ),

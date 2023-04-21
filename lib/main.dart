@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task2/screen2.dart';
 import 'screen1.dart';
 
 void main() {
@@ -13,7 +14,13 @@ class validate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: authentication.id,
-      routes: {authentication.id: (context) => authentication()},
+      routes: {
+        authentication.id: (context) => authentication(),
+        result.id: (context) => result(
+              name: '',
+              //gender: '',
+            )
+      },
     );
   }
 }
