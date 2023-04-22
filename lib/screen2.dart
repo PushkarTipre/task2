@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'screen1.dart';
 
 class result extends StatelessWidget {
-  result({Key? key, required this.name}) : super(key: key);
+  result({Key? key, required this.name, required this.age}) : super(key: key);
   static String id = 'screen2';
   String name;
+  String age;
   String gender = genderReal;
 
   @override
@@ -18,6 +19,11 @@ class result extends StatelessWidget {
                 height: 200,
                 width: 200,
                 child: Text(name),
+              ),
+              Container(
+                height: 200,
+                width: 200,
+                child: Text(age),
               ),
               Container(
                 height: 200,

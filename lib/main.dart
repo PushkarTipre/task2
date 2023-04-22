@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task2/screen2.dart';
 import 'screen1.dart';
+import 'mainScreen.dart';
 
 void main() {
   runApp(const validate());
@@ -13,13 +14,14 @@ class validate extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: authentication.id,
+      initialRoute: btnScreen.id,
       routes: {
         authentication.id: (context) => authentication(),
+        btnScreen.id: (context) => btnScreen(),
         result.id: (context) => result(
-              name: '',
+              name: '', age: '',
               //gender: '',
-            )
+            ),
       },
     );
   }

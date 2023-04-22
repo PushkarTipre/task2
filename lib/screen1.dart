@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:task2/screen2.dart';
 
 //enum genderSelect { Male, Female }
-String genderReal = "xzzz";
+String genderReal = "";
 
 class authentication extends StatefulWidget {
   const authentication({Key? key}) : super(key: key);
@@ -15,26 +15,18 @@ class authentication extends StatefulWidget {
 }
 
 class _authenticationState extends State<authentication> {
-  late int selectedRadio;
-
   late bool isChecked;
   late bool checkChecked;
-  final _text = TextEditingController();
-  bool _validate = false;
+  final _textControl = TextEditingController();
+  final _ageControl = TextEditingController();
+  bool _validateName = false;
+  bool _validateAge = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    selectedRadio = 0;
     isChecked = false;
     checkChecked = false;
-    //genderReal = "xxx";
-  }
-
-  setSelectedRadio(int val) {
-    setState(() {
-      selectedRadio = val;
-    });
   }
 
   @override
@@ -48,8 +40,23 @@ class _authenticationState extends State<authentication> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(20.0),
-              child: Text('Enter your details below : '),
+              padding: EdgeInsets.only(right: 30, top: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'images/logo.png',
+                      height: 80.0,
+                    ),
+                  ),
+                  Text(
+                    'Enter your details below : ',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -59,13 +66,13 @@ class _authenticationState extends State<authentication> {
                     RegExp("[a-zA-Z]"),
                   ),
                 ],
-                controller: _text,
+                controller: _textControl,
                 onTap: () {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).unfocus();
                 },
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
-                  errorText: _validate ? 'Name cannot be empty' : null,
+                  errorText: _validateName ? 'Name cannot be empty' : null,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                     borderRadius: BorderRadius.all(
@@ -82,19 +89,37 @@ class _authenticationState extends State<authentication> {
                 ),
               ),
             ),
-            /*ListTile(
-              title: Text('Male'),
-              leading: Radio(
-                value: genderSelect.Male,
-                groupValue: _gender,
-                activeColor: Colors.green,
-                onChanged: (val) {
-                  setState(() {
-                    _gender = val!;
-                  });
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp("[0-9]"),
+                  ),
+                ],
+                controller: _ageControl,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
                 },
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  errorText: _validateAge ? 'Age cannot be empty' : null,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100.0),
+                    ),
+                  ),
+                  prefixIcon: Icon(Icons.man),
+                  hintText: 'Enter Age',
+                  filled: true,
+                  fillColor: Colors.white30,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                ),
               ),
-            ),*/
+            ),
             ListTile(
               title: Text('Male'),
               leading: Radio(
@@ -123,41 +148,63 @@ class _authenticationState extends State<authentication> {
                 },
               ),
             ),
-            ListTile(
+            /*ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 30),
               title: Text(
-                'I Agree To The Terms & Conditions',
+                'I Agree to the Terms & Conditions',
                 style: TextStyle(),
               ),
               trailing: Checkbox(
                 value: isChecked,
                 onChanged: (value) {
-                  setState(() {
-                    isChecked = value!;
-                  });
+                  isChecked = value!;
                 },
               ),
-            ),
+            ),*/
+            FormField(
+              builder: (state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('I Agree to the Terms & Conditions',
+                        style: TextStyle(fontSize: 20)),
+                    Checkbox(
+                        value: isChecked,
+                        onChanged: (value) {
+                          isChecked = value!;
+                          state.didChange(value);
+                        }),
+                  ],
+                ); // Checkbox
+              },
+            ), //
             Padding(
-              padding: const EdgeInsets.only(top: 30.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: TextButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    foregroundColor: Colors.transparent),
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.transparent,
+                ),
                 onPressed: () {
                   setState(() {
-                    if (_text.text.isEmpty) {
-                      _validate = true;
-                      debugPrint(genderReal);
+                    if (_textControl.text.isEmpty || _ageControl.text.isEmpty) {
+                      _validateName = true;
+                      _validateAge = true;
                     } else {
-                      _validate = false;
+                      _validateName = false;
+                      _validateAge = false;
 
-                      //print();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return result(name: _text.text);
+                            return result(
+                              name: _textControl.text,
+                              age: _ageControl.text,
+                            );
                           },
                         ),
                       );
@@ -166,20 +213,12 @@ class _authenticationState extends State<authentication> {
                     //Navigator.pushNamed(context, result.id);
                   });
                 },
-                child: Image(
-                    height: 150,
-                    width: 250,
-                    image: NetworkImage(
-                        'https://s38924.pcdn.co/wp-content/uploads/2021/09/User-Registration-1-scaled-1-1360x692.jpg')),
+                child: Image.asset(
+                  'images/reg.png',
+                  height: 120.0,
+                ),
               ),
             ),
-            /*Image(
-              image: NetworkImage(
-                  'https://s38924.pcdn.co/wp-content/uploads/2021/09/User-Registration-1-scaled-1-1360x692.jpg'),
-              height: 200,
-              width: 250,
-              fit: BoxFit.cover,
-            )*/
           ],
         ),
       ),
