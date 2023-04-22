@@ -161,21 +161,36 @@ class _authenticationState extends State<authentication> {
                 },
               ),
             ),*/
-            FormField(
+            FormField<bool>(
               builder: (state) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('I Agree to the Terms & Conditions',
-                        style: TextStyle(fontSize: 20)),
+                    Text(
+                      'I Agree to the Terms & Conditions',
+                      style: TextStyle(fontSize: 20),
+                    ),
                     Checkbox(
                         value: isChecked,
                         onChanged: (value) {
                           isChecked = value!;
                           state.didChange(value);
                         }),
+                    Text(
+                      state.errorText ?? '',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    )
                   ],
-                ); // Checkbox
+                );
+              },
+              validator: (value) {
+                if (!isChecked) {
+                  return 'You must check this box';
+                } else {
+                  return null;
+                }
               },
             ), //
             Padding(
@@ -190,7 +205,9 @@ class _authenticationState extends State<authentication> {
                 ),
                 onPressed: () {
                   setState(() {
-                    if (_textControl.text.isEmpty || _ageControl.text.isEmpty) {
+                    if (_textControl.text.isEmpty ||
+                        _ageControl.text.isEmpty ||
+                        isChecked == checkChecked) {
                       _validateName = true;
                       _validateAge = true;
                     } else {
