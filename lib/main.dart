@@ -16,8 +16,8 @@ class validate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: btnScreen.id,
       routes: {
-        authentication.id: (context) => authentication(),
-        btnScreen.id: (context) => btnScreen(),
+        authentication.id: (context) => const authentication(),
+        btnScreen.id: (context) => const btnScreen(),
         result.id: (context) => result(
               name: '', age: '',
               //gender: '',

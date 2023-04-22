@@ -11,28 +11,79 @@ class result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Column(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.blue, Colors.white],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 200,
-                width: 200,
-                child: Text(name),
+              Hero(
+                tag: 'logo',
+                child: Image.asset(
+                  'images/logo.png',
+                  height: 230,
+                ),
               ),
-              Container(
-                height: 200,
-                width: 200,
-                child: Text(age),
+              const SizedBox(
+                height: 60.0,
               ),
-              Container(
-                height: 200,
-                width: 200,
-                child: Text(gender),
-              )
+              const Padding(
+                padding: EdgeInsets.only(right: 30.0),
+                child: Text(
+                  'Your details are',
+                  style: TextStyle(fontSize: 28.0),
+                ),
+              ),
+              const SizedBox(
+                height: 40.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Your entered Username is : ',
+                    style: TextStyle(fontSize: 24.0),
+                  ),
+                  Text(
+                    name,
+                    style: const TextStyle(
+                        fontSize: 24.0, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Your entered Age is : ',
+                      style: TextStyle(fontSize: 24.0)),
+                  Text(age,
+                      style: const TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.w600)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Your selected Gender is : ',
+                      style: TextStyle(fontSize: 24.0)),
+                  Text(gender,
+                      style: const TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.w600)),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

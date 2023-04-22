@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:task2/screen2.dart';
 
-//enum genderSelect { Male, Female }
 String genderReal = "";
 
 class authentication extends StatefulWidget {
@@ -33,210 +32,241 @@ class _authenticationState extends State<authentication> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Authentication'),
+        backgroundColor: const Color(0xFF00159E),
+        title: const Text('User Authentication'),
       ),
-      backgroundColor: Color(0xffCECACA),
+      //backgroundColor: Color(0xffCECACA),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(right: 30, top: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: 'logo',
-                    child: Image.asset(
-                      'images/logo.png',
-                      height: 80.0,
-                    ),
-                  ),
-                  Text(
-                    'Enter your details below : ',
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                ],
-              ),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.blue, Colors.white],
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                    RegExp("[a-zA-Z]"),
-                  ),
-                ],
-                controller: _textControl,
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  errorText: _validateName ? 'Name cannot be empty' : null,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(100.0),
-                    ),
-                  ),
-                  prefixIcon: Icon(Icons.man),
-                  hintText: 'Enter Username',
-                  filled: true,
-                  fillColor: Colors.white30,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                    RegExp("[0-9]"),
-                  ),
-                ],
-                controller: _ageControl,
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  errorText: _validateAge ? 'Age cannot be empty' : null,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(100.0),
-                    ),
-                  ),
-                  prefixIcon: Icon(Icons.man),
-                  hintText: 'Enter Age',
-                  filled: true,
-                  fillColor: Colors.white30,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Male'),
-              leading: Radio(
-                value: "Male",
-                activeColor: Colors.green,
-                groupValue: genderReal,
-                onChanged: (value) {
-                  //setSelectedRadio(value);
-                  setState(() {
-                    genderReal = value.toString();
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: Text('Female'),
-              leading: Radio(
-                value: "Female",
-                activeColor: Colors.orange,
-                groupValue: genderReal,
-                onChanged: (value) {
-                  //setSelectedRadio(value);
-                  setState(() {
-                    genderReal = value.toString();
-                  });
-                },
-              ),
-            ),
-            /*ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 30),
-              title: Text(
-                'I Agree to the Terms & Conditions',
-                style: TextStyle(),
-              ),
-              trailing: Checkbox(
-                value: isChecked,
-                onChanged: (value) {
-                  isChecked = value!;
-                },
-              ),
-            ),*/
-            FormField<bool>(
-              builder: (state) {
-                return Row(
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(right: 30, top: 10.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'I Agree to the Terms & Conditions',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          isChecked = value!;
-                          state.didChange(value);
-                        }),
-                    Text(
-                      state.errorText ?? '',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
+                    Hero(
+                      tag: 'logo',
+                      child: Image.asset(
+                        'images/logo.png',
+                        height: 80.0,
                       ),
-                    )
+                    ),
+                    const Text(
+                      'Enter your details below : ',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
                   ],
-                );
-              },
-              validator: (value) {
-                if (!isChecked) {
-                  return 'You must check this box';
-                } else {
-                  return null;
-                }
-              },
-            ), //
-            Padding(
-              padding: const EdgeInsets.only(top: 0.0),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  backgroundColor: Colors.transparent,
-                  foregroundColor: Colors.transparent,
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (_textControl.text.isEmpty ||
-                        _ageControl.text.isEmpty ||
-                        isChecked == checkChecked) {
-                      _validateName = true;
-                      _validateAge = true;
-                    } else {
-                      _validateName = false;
-                      _validateAge = false;
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return result(
-                              name: _textControl.text,
-                              age: _ageControl.text,
-                            );
-                          },
-                        ),
-                      );
-                    }
-                    //_text.text.isEmpty ? _validate = true : _validate = false;
-                    //Navigator.pushNamed(context, result.id);
-                  });
-                },
-                child: Image.asset(
-                  'images/reg.png',
-                  height: 120.0,
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp("[a-zA-Z]"),
+                    ),
+                  ],
+                  controller: _textControl,
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    errorText: _validateName ? 'Name cannot be empty' : null,
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(100.0),
+                      ),
+                    ),
+                    prefixIcon: const Icon(Icons.man),
+                    hintText: 'Enter Username',
+                    filled: true,
+                    fillColor: Colors.white30,
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp("[0-9]"),
+                    ),
+                  ],
+                  controller: _ageControl,
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    errorText: _validateAge ? 'Age cannot be empty' : null,
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(100.0),
+                      ),
+                    ),
+                    prefixIcon: const Icon(Icons.man),
+                    hintText: 'Enter Age',
+                    filled: true,
+                    fillColor: Colors.white30,
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: const Text('Male'),
+                leading: Radio(
+                  value: "Male",
+                  activeColor: Colors.red,
+                  groupValue: genderReal,
+                  onChanged: (value) {
+                    setState(() {
+                      genderReal = value.toString();
+                    });
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('Female'),
+                leading: Radio(
+                  value: "Female",
+                  activeColor: Colors.orange,
+                  groupValue: genderReal,
+                  onChanged: (value) {
+                    setState(() {
+                      genderReal = value.toString();
+                    });
+                  },
+                ),
+              ),
+              /*ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                title: Text(
+                  'I Agree to the Terms & Conditions',
+                  style: TextStyle(),
+                ),
+                trailing: Checkbox(
+                  value: isChecked,
+                  onChanged: (value) {
+                    isChecked = value!;
+                  },
+                ),
+              ),*/
+              FormField<bool>(
+                builder: (state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'I Agree to the Terms & Conditions',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Checkbox(
+                          value: isChecked,
+                          onChanged: (value) {
+                            isChecked = value!;
+                            state.didChange(value);
+                          }),
+                      Text(
+                        state.errorText ?? '',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      )
+                    ],
+                  );
+                },
+                validator: (value) {
+                  if (!isChecked) {
+                    return 'You must check this box';
+                  } else {
+                    return null;
+                  }
+                },
+              ), //
+              Padding(
+                padding: const EdgeInsets.only(top: 0.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.transparent,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (_textControl.text.isEmpty ||
+                          _ageControl.text.isEmpty ||
+                          isChecked == checkChecked) {
+                        _validateName = true;
+                        _validateAge = true;
+                      } else {
+                        _validateName = false;
+                        _validateAge = false;
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return result(
+                                name: _textControl.text,
+                                age: _ageControl.text,
+                              );
+                            },
+                          ),
+                        );
+                      }
+
+                      if (isChecked == checkChecked) {
+                        AlertDialog alert = AlertDialog(
+                          title: const Text('ERROR'),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: [
+                                const Text('Please read the Terms & Conditions')
+                              ],
+                            ),
+                          ),
+                        );
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return alert;
+                          },
+                        );
+                      }
+
+                      //_text.text.isEmpty ? _validate = true : _validate = false;
+                      //Navigator.pushNamed(context, result.id);
+                    });
+                  },
+                  child: Image.asset(
+                    'images/reg.png',
+                    height: 120.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
